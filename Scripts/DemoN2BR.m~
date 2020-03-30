@@ -1,0 +1,30 @@
+% Simple demo of N2BR
+display('This is DemoN2BR to see the function N2BR in action')
+display('Here P is a nnmm tensor of coefficients P(ab|xy) for a bipartite Bell scenario')
+display('N2BR accepts different reshapings of P')
+display('For instance, we can use')
+n = 2; m = 2            % n outputs and m inputs for Alice and Bob
+display('and P = reshape(P_det(n,m,0,0),n*n*m*m,1) to get the first deterministic scenario as a vector')
+P = reshape(P_det(n,m,0,0), n*n*m*m, 1)      % P(ab|xy) for deterministic local point as tensor
+display('We can simply run N2BR(n,m,P) and measure the time')
+tic
+neg = N2BR(n,m,P)
+toc
+% Or we can set options (here all equal to defaults)
+display('Or we can set options manually')
+options = [];
+options.T = matrixT(n,m);
+options.A = matrixA(n,m);
+options.U = matrixU(n,m);
+options.muf = 1e-10;
+options.TolVar = 1e-10;
+options.Verbose = 0
+display('and run N2BR(n,m,P, options)')
+tic
+neg = N2BR(n,m,P,options)
+toc
+display('Let us try a generalized PR box by defining P = P_pr(n,m)')
+P = reshape(P_pr(n,m), n*n,m*m) 
+tic
+[neg, q] = N2BR(n,m,P)
+toc
